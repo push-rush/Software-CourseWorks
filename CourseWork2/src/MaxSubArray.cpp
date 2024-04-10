@@ -17,41 +17,38 @@ public:
     {
         int sz = nums.size();
         vector<int>dp(sz, 0);
-        for (int i = 1; i <= sz; i++)
-        {
-            if (i == 1)
-                dp[i - 1] = max(nums[i], 0);
-            else
-            {
-                dp[i - 1] = max(dp[i - 2] + nums[i], nums[i]);
-            }
-        }
         
-        int max = 0;
+        int maxValue = 0;
         for (int i = 0; i < sz; i++)
         {
-            if (dp[i] > max)
-                max = dp[i];
+            if (i == 0)
+                dp[i] = max(nums[i], 0);
+            else
+                dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+
+            if (dp[i] > maxValue)
+                maxValue = dp[i];
         }
-        return max;
+        
+        return maxValue;
     }
 };
 
-int main()
-{
-    int n = 0;
-    cin >> n;
+// int main()
+// {
+//     int n = 0;
+//     cin >> n;
 
-    vector<int> nums(n + 1, 0);
-    int in = 0;
-    for (int i = 1; i <= n; i++)
-    {
-        cin >> in;
-        nums[i] = in;
-    }
-    Solution so;
-    int max = so.maxSubArrays(nums);
-    cout << max << "\n";
+//     vector<int> nums(n, 0);
+//     int in = 0;
+//     for (int i = 0; i < n; i++)
+//     {
+//         cin >> in;
+//         nums[i] = in;
+//     }
+//     Solution so;
+//     int max = so.maxSubArrays(nums);
+//     cout << max << "\n";
 
-    return 0;
-}
+//     return 0;
+// }
