@@ -22,6 +22,7 @@ add_executable(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/main.cpp
     ${PROJECT_SOURCE_DIR}/src/Button.cpp
     ${PROJECT_SOURCE_DIR}/src/TextBox.cpp
+    ${PROJECT_SOURCE_DIR}/src/LogWindow.cpp
 )
 
 # 链接操作

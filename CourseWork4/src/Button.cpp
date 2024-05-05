@@ -1,6 +1,7 @@
 #include "../include/Button.hpp"
+#include "TextBox.hpp"
 
-Button::Button(HWND parentWnd, int x, int y, int width, int height, LPCWSTR buttonText) : m_clickHandler(nullptr)
+Button::Button(HWND parentWnd, int x, int y, int width, int height, LPCWSTR buttonText) : m_clickHandler(nullptr), m_hButton(nullptr) 
 {
     m_hButton = CreateWindowW(
         L"BUTTON", buttonText, 
@@ -38,8 +39,13 @@ void Button::ProcessClicked()
     POINT pt;
     GetCursorPos(&pt); // 获取鼠标屏幕坐标
     ScreenToClient(m_hButton, &pt); // 转换为相对于按钮客户区的坐标
+    // MessageBox(NULL, "Button clicked!", "Info", MB_ICONINFORMATION | MB_OK);
 
-    MessageBox(NULL, "Button clicked!", "Info", MB_ICONINFORMATION | MB_OK);
+    if (m_textBox != nullptr)
+    {
+        std::string text = m_textBox->GetText();
+        MessageBox(NULL, text.c_str(), "Text from TextBox", MB_ICONINFORMATION | MB_OK);
+    }
 }
 
 LRESULT CALLBACK Button::ButtonProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
@@ -63,4 +69,18 @@ LRESULT CALLBACK Button::ButtonProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
     }
 
     return CallWindowProc(button->m_oldWndProc, hwnd, uMsg, wParam, lParam);
+}
+
+void Button::SetFont(int fontSize)
+{
+    HFONT hFont = CreateFontW(
+        fontSize, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+        DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+        DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial"
+    );
+
+    if (hFont != NULL)
+    {
+        SendMessage(m_hButton, WM_SETFONT, (WPARAM)hFont, TRUE);
+    }
 }
